@@ -5,8 +5,8 @@ var https = require('https');
 const http = require('http');
 var port = process.env.PORT || 3333;
 var options = {
-    key: fs.readFileSync('./shoppingnow.xyz/cert.pem'),
-    cert: fs.readFileSync('./shoppingnow.xyz/privkey.pem')
+    cert: fs.readFileSync('/etc/letsencrypt/live/shoppingnow.xyz/fullchain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/shoppingnow.xyz/privkey.pem')
 };
 httpsServer = https.createServer(options, app);
 httpServer = http.Server( app);

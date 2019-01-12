@@ -72,8 +72,8 @@ $(document).ready(function () {
         var serverAddress = $('.server-address').val();
         // var uri = `sip:${name}@10.104.25.36:5060`;
         // var socket = new JsSIP.WebSocketInterface('ws://10.104.25.36:5066');
-        var socketId = `ws://${serverAddress}:5066`
-        // var socketId = `wss://${serverAddress}:7443`
+       // var socketId = `ws://${serverAddress}:5066`
+         var socketId = `wss://${serverAddress}:7443`
         var socket = new JsSIP.WebSocketInterface(socketId);
         var uri = `sip:${name}@${serverAddress}:5080`;
         console.log('uri', uri);
