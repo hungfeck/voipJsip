@@ -9,7 +9,7 @@ var options = {
     key: fs.readFileSync('/etc/letsencrypt/live/shoppingnow.xyz/privkey.pem')
 };
 httpsServer = https.createServer(options, app);
-httpServer = http.Server( app);
+// httpServer = http.Server( app);
 app.use(express.static('public'));
 
 app.get('/', function(req, res){

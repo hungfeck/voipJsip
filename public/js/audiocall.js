@@ -70,14 +70,18 @@ $(document).ready(function () {
     $('.btnConnect').click(function () {
         var name = $('.name').val();
         var serverAddress = $('.server-address').val();
-        // var uri = `sip:${name}@10.104.25.36:5060`;
-        // var socket = new JsSIP.WebSocketInterface('ws://10.104.25.36:5066');
-       // var socketId = `ws://${serverAddress}:5066`
-         var socketId = `wss://${serverAddress}:7443`
-        var socket = new JsSIP.WebSocketInterface(socketId);
-        var uri = `sip:${name}@${serverAddress}:5080`;
+        //ip centos: 35.225.204.204
+        // var uri = `sip:${name}@35.225.204.204:5060`;
+        // var socket = new JsSIP.WebSocketInterface('ws://35.225.204.204:5066');
+    //    var socketId = `ws://${serverAddress}:5066`
+        //  var socketId = `wss://${serverAddress}:7443`
+        // var socket = new JsSIP.WebSocketInterface(socketId);
+        // var uri = `sip:${name}@${serverAddress}:5080`;
+
+        var uri = `sip:1003@shoppingnow.xyz:5060`;
+        var socket = new JsSIP.WebSocketInterface('wss://shoppingnow.xyz:7443');
         console.log('uri', uri);
-        console.log('socketId', socketId);
+        // console.log('socketId', socketId);
         if (name === null || name === '' || name === 'undefined')
         {
             alert('Chưa nhập địa chỉ người nhận')
@@ -190,7 +194,7 @@ $(document).ready(function () {
     
     $('.btnMessage').click(function () {
         var receivername = $('.receivername').val();
-        var uri = `sip:${receivername}@10.104.25.36:5060`;
+        var uri = `sip:${receivername}@35.225.204.204:5060`;
 
         var text = 'Hello Bob!';
         var eventHandlers = {
@@ -211,7 +215,7 @@ $(document).ready(function () {
 
     $('.btnCall').click(function () {
         var receivername = $('.receivername').val();
-        var uri = `sip:${receivername}@10.104.25.36:5060`;
+        var uri = `sip:${receivername}@35.225.204.204:5060`;
         console.log('uri', uri);
         var session = coolPhone.call(uri, callOptions);
         ph_addStream();
@@ -241,7 +245,7 @@ $(document).ready(function () {
                 // output += '<br><div style="margin-left:15px;">' + labels.join('<br>') + '</div>';
             }
             else{
-                console.log('đéo có gì cả')
+                console.log('ko có thiết bị')
             }
         })
         
