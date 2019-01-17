@@ -48,6 +48,14 @@
   .lt-xbutton-wrapper{
       cursor: pointer;
   }
+
+  .onCall{
+    background: #D80027;
+  }
+
+  .phone-icon{
+    color: #fff !important;
+  }
   
   .lt-xbutton-main-wrapper {
     left: 40px;

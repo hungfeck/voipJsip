@@ -39,6 +39,10 @@ var callOptions = {
   };
 
 var session;
+function toggleBtn(){
+    $('.btnCall').css({'background': 'red'})
+}
+
 function ph_addStream() {
     var peerconnection = session.connection;
     session.connection.addEventListener('addstream', (e) =>
@@ -294,6 +298,9 @@ $(document).ready(function () {
     })
 
     $('.btnCall').click(function () {
+        $('.lt-xbutton-icons').toggleClass('onCall');
+        $('.lt-xbutton-phone-icon').toggleClass('phone-icon');
+        return;
         console.log('vao goi');
         // var receivername = $('.receivername').val();
         var uri = `sip:1001@35.225.204.204:5060`;
