@@ -50,22 +50,102 @@ function ph_addStream() {
  }
 
 $(document).ready(function () {
+    var uri = `sip:1003@shoppingnow.xyz:5060`;
+    var socket = new JsSIP.WebSocketInterface('wss://shoppingnow.xyz:7443');
+    var configuration = {
+        sockets: [socket],
+        uri: uri,
+        password: '1234',
+        session_timers: false
+    };
 
-    // var ifrm = document.createElement("iframe");
-    //     ifrm.setAttribute("src", "http://www.quirksmode.org/iframetest2.html");
-    //     ifrm.style.width = "640px";
-    //     ifrm.style.height = "480px";
-    //     document.body.appendChild(ifrm);
+    coolPhone = new JsSIP.UA(configuration);
 
-    // var link = "http://www.quirksmode.org/iframetest2.html"
-    //  var iframe = document.createElement('iframe');
-    //  iframe.frameBorder=0;
-    //  iframe.width="300px";
-    //  iframe.height="250px";
-    //  iframe.id="randomid";
-    //  iframe.setAttribute("src", link);
-    //  document.getElementById("iframe-test").appendChild(iframe);
-     
+    coolPhone.on('connected', function (e) {
+        console.log("Đã kết nối");
+    });
+
+    coolPhone.on('disconnected', function (e) {
+        console.log('Mất kết nối');
+        // coolPhone.register();
+        // coolPhone.start();
+    });
+
+    coolPhone.on('registered', function (e) {
+        console.log("Đăng ký");
+        $('.alert').html("Đăng ký thành công");
+    });
+    coolPhone.on('unregistered', function (e) {
+        console.log("Bỏ đăng ký");
+    });
+    coolPhone.on('registrationFailed', function (e) {
+        console.log("Đăng ký lỗi", e);
+    });
+    coolPhone.start();
+    // coolPhone.register();
+
+    
+   
+    coolPhone.on('newRTCSession', function(e){
+        console.log('new session', e.session);
+        var newSession = e.session;
+        if(session){ 
+            console.log('con session', session);
+            e.session.terminate();
+            return;
+            // session.terminate();
+        }
+        session = newSession;
+
+        session.on('ended', function(e){
+            console.log('Kết thúc cuộc gọi', e);
+            // e.cause : nguyên nhân kết thúc: terminate - ngắt cuộc gọi
+            session = null;
+        });
+        session.on('failed', function(e){
+            console.log('Cuộc gọi lỗi', JSON.stringify(e));
+            $('.alert').html('Cuộc gọi lỗi 111', JSON.stringify(e));
+            session = null;
+        });
+        session.on('accepted', function(e){
+            $('.alert').html(`Chấp nhận cuộc gọi`);
+            console.log('Chấp nhận cuộc gọi', e);
+            console.log('isEstablished', session.isEstablished())
+        });
+        if(session._direction === 'incoming')
+        {
+            console.log('Cuộc gọi đến');
+            $('.alert').html(`Cuộc gọi đến từ ${session._request.from._display_name}`);
+        }
+
+        if(session._direction === 'outgoing')
+        {
+            console.log('Cuộc gọi đi');
+            
+            $('.alert').html("Cuộc gọi đi");
+        }
+
+        session.on('confirmed',function(e){
+            console.log('call is confirmed',e);
+            $('.alert').html("call is confirmed");
+            // var localStream = session.connection.getSenders()[0];
+            // var localStream1 = session.connection.getLocalStreams()[0];
+            
+            // console.log('localStream', localStream);
+            // console.log('localStream cu', localStream1);
+            
+            // var dtmfSender = session.connection.createDTMFSender(localStream1.getAudioTracks()[0])
+            //     session.sendDTMF = function(tone){
+            //     dtmfSender.insertDTMF(tone);
+            // };
+        });
+
+        // session.on('addstream', function(e){
+        //     console.log('addstream');
+        //     incomingCallAudio.pause();
+        //     remoteAudio.src = window.URL.createObjectURL(e.stream);
+        // });
+    })
 
     $('.btnConnect').click(function () {
         var name = $('.name').val();
@@ -214,8 +294,9 @@ $(document).ready(function () {
     })
 
     $('.btnCall').click(function () {
-        var receivername = $('.receivername').val();
-        var uri = `sip:${receivername}@35.225.204.204:5060`;
+        console.log('vao goi');
+        // var receivername = $('.receivername').val();
+        var uri = `sip:1001@35.225.204.204:5060`;
         console.log('uri', uri);
         var session = coolPhone.call(uri, callOptions);
         ph_addStream();

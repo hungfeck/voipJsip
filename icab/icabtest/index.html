@@ -922,6 +922,22 @@
        
     </script>
     <!--Start of Zendesk Chat Script-->
+    <script type="text/javascript">
+        function prepareFrame() {
+            var ifrm = document.createElement("iframe");
+            
+            ifrm.setAttribute("src", "http://engineering.vtvcab.vn/");
+            ifrm.style.width = "640px";
+            ifrm.style.height = "480px";
+            console.log('da tao xong')
+            document.body.appendChild(ifrm);
+            console.log('zo')
+        }
+        $(document).ready(function(){
+            console.log(11111)
+            prepareFrame()
+        })
+    </script> 
 	<script type="text/javascript">
 	    window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
         d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
