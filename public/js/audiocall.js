@@ -54,6 +54,7 @@ function ph_addStream() {
  }
 
 $(document).ready(function () {
+    
     var uri = `sip:1003@shoppingnow.xyz:5060`;
     var socket = new JsSIP.WebSocketInterface('wss://shoppingnow.xyz:7443');
     var configuration = {
@@ -103,6 +104,10 @@ $(document).ready(function () {
 
         session.on('ended', function(e){
             console.log('Kết thúc cuộc gọi', e);
+            $('.lt-xbutton-icons').removeClass('onCall');
+            $('.phone').css({'display': 'none'});
+            $('.phone-on-hold').css({'display': 'block'});
+            $('.btn-rating').click();
             // e.cause : nguyên nhân kết thúc: terminate - ngắt cuộc gọi
             session = null;
         });
@@ -151,7 +156,75 @@ $(document).ready(function () {
         // });
     })
 
+    $('.menu-open-button').click(function(){
+        checkOnCall = $('.phone').css('display');
+        console.log('check', checkOnCall)
+        if(checkOnCall === 'block'){
+            console.log('dang goi')
+            
+            $('.phone').css({'display': 'none'});
+            $('.phone-on-hold').css({'display': 'block'});
+            $('.btn-rating').click();
+            session.terminate();
+            // $('.phone').css({'display': 'none'});
+            // $('.phone-on-hold').css({'display': 'block'});
+            // $(".menu-open").removeAttr("disabled");
+        }
+        else{
+            console.log('ranh tay')
+            $(".menu-open").removeAttr("disabled");
+            // $('checkbox').attr('checked','checked');
+            // $('.phone-on-hold').css({'display': 'none'});
+            // $('.menu-item').css({'display': 'block'});
+        }
+    })
+
+    // $('.close').click(function(){
+
+    // })
+    
+
+    $('.menu-item').click(function(){
+        $('.phone').css({'display': 'block'});
+        $('.phone-on-hold').css({'display': 'none'});
+        // $('.close').css({'display': 'none'});
+        // $('.menu-item').css({'display': 'none'});
+        $('.menu-open').attr('checked',false);
+        $('.menu-open').attr('disabled',true);
+        $('.btnConnect').click();
+        makeCall();
+    })
+
+    // Display feedback after rating 
+    $('.rating').on('click', function() {
+        console.log('rating display')
+        var rating = this['value'];
+        
+        $('.feedback').css('display', "block");
+        
+        feedback_validate(rating);
+        
+    });
+
+    // Run enable button function based on input
+    $('.feedback textarea').keyup(function() {
+        if ($('.feedback textarea').val().length > 3)   {
+        enable_submit();
+        }
+    });
+
+    function makeCall(){
+        console.log('vao goi moi');
+        // var receivername = $('.receivername').val();
+        var uri = `sip:1001@35.225.204.204:5060`;
+        console.log('uri', uri);
+        var session = coolPhone.call(uri, callOptions);
+        ph_addStream();
+    }
+
+
     $('.btnConnect').click(function () {
+        
         var name = $('.name').val();
         var serverAddress = $('.server-address').val();
         //ip centos: 35.225.204.204
@@ -218,9 +291,12 @@ $(document).ready(function () {
             session = newSession;
 
             session.on('ended', function(e){
+                $('.btn-rating').click();
                 console.log('Kết thúc cuộc gọi', e);
+                
                 // e.cause : nguyên nhân kết thúc: terminate - ngắt cuộc gọi
                 session = null;
+                
             });
             session.on('failed', function(e){
                 console.log('Cuộc gọi lỗi', JSON.stringify(e));
@@ -299,7 +375,7 @@ $(document).ready(function () {
 
     $('.btnCall').click(function () {
         $('.lt-xbutton-icons').toggleClass('onCall');
-        $('.lt-xbutton-phone-icon').toggleClass('phone-icon');
+
         console.log('vao goi moi');
         // var receivername = $('.receivername').val();
         var uri = `sip:1001@35.225.204.204:5060`;
