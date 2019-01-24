@@ -185,14 +185,14 @@ $(document).ready(function () {
     
 
     $('.menu-item').click(function(){
-        // $('.phone').css({'display': 'block'});
-        // $('.phone-on-hold').css({'display': 'none'});
+        $('.phone').css({'display': 'block'});
+        $('.phone-on-hold').css({'display': 'none'});
         // $('.close1').css({'display': 'none'});
         // $('.menu-item').css({'display': 'none'});
         $('.menu-open').attr('checked',false);
-        // $('.menu-open').attr('disabled',true);
-        // $('.btnConnect').click();
-        // makeCall();
+        $('.menu-open').attr('disabled',true);
+        $('.btnConnect').click();
+        makeCall();
     })
 
     // Display feedback after rating 
